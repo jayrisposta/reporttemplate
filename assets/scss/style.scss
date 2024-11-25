@@ -1,0 +1,30 @@
+/**
+ * ======================
+ * START OF MAIN SCSS FILE FOR ASTRO WEBSITE
+ * =========================
+ * 
+ * TABLE OF INDEX:
+ * 
+ * # RESET CSS
+ * # COLORS CSS
+ * # VARIABLES CSS
+ * # TYPOGRAPHY CSS
+ * # MIXINS CSS
+ * # BUTTONS CSS
+ * ======================
+ *
+ * @format
+ */
+
+@import "globals/reset";
+@import "globals/colors";
+@import "globals/variables";
+@import "globals/typography";
+@import "globals/mixins";
+@import "components/buttons";
+@import "keyframe";
+@import "header";
+@import "main";
+/* ======================
+END OF MAIN SCSS FILE FOR ASTRO WEBSITE
+====================== */

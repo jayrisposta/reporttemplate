@@ -1,0 +1,166 @@
+@mixin font-size($fs-map, $fs-breakpoints: $breakpoints) {  
+  @each $fs-breakpoint, $fs-font-size in $fs-map {
+    //@debug $fs-breakpoint;
+    @if $fs-breakpoint == null {
+      @include make-font-size($fs-font-size);
+    }
+    @else {
+      // If $fs-font-size is a key that exists in
+      // $fs-breakpoints, use the value
+      @if map-has-key($fs-breakpoints, $fs-breakpoint) {
+        $fs-breakpoint: map-get($fs-breakpoints, $fs-breakpoint);
+      }
+      @media screen and (min-width: $fs-breakpoint) {
+        @include make-font-size($fs-font-size);
+      }
+    }
+  }
+}
+
+
+@mixin make-font-size($fs-font-size) {
+  // If $fs-font-size is a list, include
+  // both font-size and line-height
+  @if type-of($fs-font-size) == "list" {
+    font-size: nth($fs-font-size, 1);
+    @if (length($fs-font-size) > 1) {
+      line-height: nth($fs-font-size, 2);
+    }
+  }
+  @else {
+    font-size: $fs-font-size;
+  }
+}
+
+
+/********* utility headings ************/
+@mixin headings($from: 1, $to: 6, $class: 'h') {
+  $selector: ();
+  @for $i from $from through $to {
+    $selector: append($selector, "#{$class}#{$i}", comma);
+  }
+
+  #{$selector} {
+    @content;
+  }
+}
+
+/************* Gradient Mixin *****************/
+
+@mixin gradientMixin($frmColor,$toColor) {
+    background: $frmColor;
+    background: -moz-linear-gradient(left, $frmColor 0%, $toColor 100%);
+    background: -webkit-linear-gradient(left, $frmColor 0%,$toColor 100%);
+    background: linear-gradient(to right, $frmColor 0%,$toColor 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr=$frmColor, endColorstr=$toColor,GradientType=1 );
+}
+
+@mixin perspective($perspective) {
+  -moz-perspective: $perspective;
+   -ms-perspective: $perspective;
+-webkit-perspective: $perspective;
+       perspective: $perspective;
+  -moz-transform-style: preserve-3d;
+   -ms-transform-style: preserve-3d;
+-webkit-transform-style: preserve-3d;
+       transform-style: preserve-3d;
+}
+
+@mixin transform ($transforms) {
+    -moz-transform: $transforms;
+    -o-transform: $transforms;
+   -ms-transform: $transforms;
+-webkit-transform: $transforms;
+       transform: $transforms;
+}
+
+
+
+/***************** font-weight ***********************/
+
+@mixin font-weight($weight) {
+  $weights: (
+    thin: 100,
+    extra-light: 200,
+    ultra-light: 200,
+    light: 300,
+    normal: 400,
+    book: 400,
+    regular: 400,
+    medium: 500,
+    semi-bold: 600,
+    demi-bold: 600,
+    bold: 700,
+    extra-bold: 800,
+    ultra-bold: 900,
+    heavy: 900,
+    black: 900,
+    ultra: 900,
+    ultra-black: 900,
+    extra-ultra: 900
+  );
+  
+  $output: $weight;
+  @if map-has-key($weights, $weight) {
+    $output: map-get($weights, $weight);
+  }
+  
+  font-weight: $output;
+}
+
+/************ common property mixins ***************/
+
+@mixin transition-prefixes($transitonVal) {
+  transition: all ease-in-out $transitonVal;
+  -webkit-transition: all ease-in-out $transitonVal;
+  -moz-transition: all ease-in-out $transitonVal;
+  -ms-transition: all ease-in-out $transitonVal;
+}
+
+@mixin marginOrPaddingAllSides($prefixVal,$values...) { 
+  @each $x in $values {
+    $keyName: nth($x, 1);
+    $valueOfSide: nth($x, 2);
+    @if (map-has-key($sides, $keyName) and (map-has-key($toCheckCssProperty, $prefixVal))) {
+      #{$prefixVal}-#{$keyName}: $valueOfSide;
+    }
+    @else if ($keyName=='all') {      
+        #{$prefixVal}: $valueOfSide;
+    }
+  }  
+}
+
+@mixin mq($width, $type: min) {
+  @if map_has_key($breakpoints, $width) {
+    $width: map_get($breakpoints, $width);
+    @if $type == max {
+        $width: $width - 1px;
+    }
+    @media only screen and (#{$type}-width: $width) {
+        @content;
+    }
+  }
+}
+
+
+
+@mixin modal-fullscreen() {
+  padding: 0 !important;
+  background: #fff;
+  
+  .modal-dialog {
+    max-width: 100% !important;
+    margin: 0;
+    padding: 0;
+    padding-bottom: 30px;
+    background-color: #fff;
+  }
+  
+  .modal-content {
+    height: auto;
+    min-height: 100%;
+    border: 0 none;
+    border-radius: 0;
+  }
+  
+}
